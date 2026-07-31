@@ -48,7 +48,7 @@ _Control your BigTreeTech Panda Status via Home Assistant_
 
 - **WiFi AP** - Allows you to enable/disable the AP.
 - **RGB Idle Light** - Allows you enable/disable the idle light
-  - It just sets the brightness to 0% or 100%.
+  - Redesigned from original to be a light entity in HA with expected controls
 
 ### Select Entities
 
@@ -75,7 +75,7 @@ After installation, add the integration via Home Assistant UI:
 
 ## Support & Issues
 
-For issues or feature requests, open an [issue on GitHub](https://github.com/ping-localhost/panda-status/issues).
+For issues or feature requests, open an [issue on GitHub](https://github.com/BambamNZ/panda-status/issues).
 
 ## License
 
