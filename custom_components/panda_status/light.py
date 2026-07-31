@@ -179,4 +179,3 @@ class PandaStatusRGBIdleLight(PandaStatusEntity, LightEntity):
         self.async_write_ha_state()
 
         self.hass.async_create_task(self._async_reconcile_after_delay())
-        
