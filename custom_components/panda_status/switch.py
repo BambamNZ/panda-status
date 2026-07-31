@@ -94,4 +94,3 @@ class PandaStatusAPSwitch(PandaStatusEntity, SwitchEntity):
             '{"ap":{"on":0}}'
         )
         await self.coordinator.async_request_refresh()
-

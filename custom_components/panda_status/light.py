@@ -90,9 +90,7 @@ class PandaStatusRGBIdleLight(PandaStatusEntity, LightEntity):
 
     def _get_brightness(self) -> int | None:
         """Get current brightness, converted from the device's 0-100 scale."""
-        device_brightness = tools.extract_value(
-            self.coordinator.data, "led.brightness"
-        )
+        device_brightness = tools.extract_value(self.coordinator.data, "led.brightness")
         if device_brightness is None:
             return None
         return round(device_brightness / 100 * 255)
