@@ -1,5 +1,5 @@
 <h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://github.com/ping-localhost/panda-status"><img align="center" src="https://i.imgur.com/bo7pxoH.png" alt="Panda Status" style="width:100%;height:100%"/></a>
+<a name="logo" href="https://github.com/BambamNZ/panda-status"><img align="center" src="https://i.imgur.com/bo7pxoH.png" alt="Panda Status" style="width:100%;height:100%"/></a>
   <br /><br /><strong>Panda Status</strong>
 </h1>
 
@@ -7,7 +7,7 @@ _Control your BigTreeTech Panda Status via Home Assistant_
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/ping-localhost/panda-status?style=for-the-badge)
-![GitHub Release Date](https://img.shields.io/github/release-date/ping-localhost/panda-status?style=for-the-badge)
+![GitHub Release Date](https://img.shields.io/github/release-date/BambamNZ/panda-status?style=for-the-badge)
 
 ---
 
@@ -23,8 +23,8 @@ _Control your BigTreeTech Panda Status via Home Assistant_
 
 <table>
   <tr>
-    <td><a href="https://github.com/ping-localhost/panda-status/actions/workflows/lint.yml" alt="lint"><img src="https://github.com/ping-localhost/panda-status/actions/workflows/lint.yml/badge.svg" alt="lint build"/></a></td>
-    <td><a href="https://github.com/ping-localhost/panda-status/actions/workflows/validate.yml" alt="MS Build"><img src="https://github.com/ping-localhost/panda-status/actions/workflows/validate.yml/badge.svg" alt="MS Build"/></a></td>
+    <td><a href="https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml" alt="lint"><img src="https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml/badge.svg" alt="lint build"/></a></td>
+    <td><a href="https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml" alt="MS Build"><img src="https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml/badge.svg" alt="MS Build"/></a></td>
   </tr>
 </table>
 
