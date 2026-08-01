@@ -4,23 +4,24 @@
   <br /><br /><strong>Panda Status</strong>
 </h1>
 
-_Control your BigTreeTech Panda Status via Home Assistant_
+_Control your BIQU (BigTreeTech) Panda Aura / P2 Status via Home Assistant_
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/ping-localhost/panda-status?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BambamNZ/panda-status?style=for-the-badge)
 
 ---
 
 ## Overview
 
-**Panda Status** custom Home Assistant integration for monitoring and controlling your BigTreeTech Panda Status device. Connection via WebSocket, parses messages, and exposes device data and controls to Home Assistant.
+**Panda Status**:
+Custom Home Assistant integration for monitoring and controlling your BIQU (BigTreeTech) Panda Aura and possibly others (P2) device(s). Connection via WebSocket, parses messages, and exposes device data and controls to Home Assistant.
 
 **Tested with**: V1.0.0 Panda Aura A1 / A1 Mini
 
 ---
 
-## Project Status
+## Project Status 🟢🟡🔴
 
 <table>
   <tr>
@@ -33,7 +34,7 @@ _Control your BigTreeTech Panda Status via Home Assistant_
 
 ## Features
 
-### Sensors
+### Sensors 📡
 
 - **WiFi AP SSID**: Shows the SSID of the device's WiFi access point.
 - **Device IP address**: Displays the IP address of the Panda Status device.
@@ -45,30 +46,31 @@ _Control your BigTreeTech Panda Status via Home Assistant_
 - **Printer state**: Indicates printer status.
 - **Firmware version**: Shows the firmware version.
 
-### Switches
+### Switches 🕹️
 
 - **WiFi AP** - Allows you to enable/disable the AP.
 
-### Light
+### Light 💡
 
 - **RGB Idle Light** - Allows control the idle light
   - **Changes from original integration:**
   - Idle light as an entity in HA, with expected light controls
 
-### Select Entities
+### Select Entities ✅
 
 - **Light effect mode**: Lets you swap from mode on the fly (Music/H2D style).
+- This will be a focus for upcoming releases 
 
-## Installation
+## 📦 Installation
 
-**Recommended:** Install via [HACS](https://hacs.xyz/)
+**Recommended:** 🚨 Install via [HACS](https://hacs.xyz/)
 
 1. Go to HACS → Integrations.
 2. [Add this repo to your HACS custom repositories](https://hacs.xyz/docs/faq/custom_repositories).
 3. Search for `Panda Status` and install.
 4. Restart Home Assistant.
 
-## Configuration
+## ⚙️ Configuration
 
 After installation, add the integration via Home Assistant UI:
 
@@ -77,10 +79,16 @@ After installation, add the integration via Home Assistant UI:
 3. Follow the setup prompts.
 4. The required URL has to be something like `ws://192.168.0.33/ws`.
 
-## Support & Issues
+## 🎫 Support & Issues
 
 For issues or feature requests, open an [issue on GitHub](https://github.com/BambamNZ/panda-status/issues).
 
 ## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## 🛠️ Development & Acknowledgments
+
+This integration forked from the original, contributed to by [@BambamNZ](https://github.com/BambamNZ) with AI pair-programming support from **Google Gemini**, **Anthropic Claude** for Home Assistant integration. 
+
+*All AI-assisted code undergoes human review, testing, and architectural validation before release.*
