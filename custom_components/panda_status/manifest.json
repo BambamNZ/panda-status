@@ -2,14 +2,14 @@
   "domain": "panda_status",
   "name": "Panda Status",
   "codeowners": [
-    "@ping-localhost"
+    "@BambamNZ"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/ping-localhost/panda-status",
+  "documentation": "https://github.com/BambamNZ/panda-status",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/ping-localhost/panda-status/issues",
+  "issue_tracker": "https://github.com/BambamNZ/panda-status",
   "requirements": [
     "websockets"
   ],
-  "version": "2.0.0"
+  "version": "2.0.2"
 }
