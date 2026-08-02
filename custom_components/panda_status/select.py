@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from enum import Enum
 import logging
 from typing import TYPE_CHECKING
@@ -29,12 +30,24 @@ class LightEffectMode(Enum):
     An enumeration representing different light effect modes.
 
     Members:
-        MUSIC (int): Light effect mode for music, value 0.
-        H2D (int): Light effect mode for H2D, value 1.
+        STATIC (int): Solid/static colour, value 0.
+        BREATHING (int): Breathing fade effect, value 1.
+        STROBING (int): Strobe effect, value 2.
+        MARQUEE (int): Marquee/chase effect, value 3.
+        COLOR_CYCLE (int): Colour cycle effect, value 4.
+        RAINBOW (int): Rainbow effect, value 5.
+        WARNING_HOT (int): Warning/hot indicator effect, value 6.
+        H2D_STYLE (int): H2D style effect, value 7.
     """
 
-    MUSIC = 0
-    H2D = 1
+    STATIC = 0
+    BREATHING = 1
+    STROBING = 2
+    MARQUEE = 3
+    COLOR_CYCLE = 4
+    RAINBOW = 5
+    WARNING_HOT = 6
+    H2D_STYLE = 7
 
     @classmethod
     def from_value(cls, value: int) -> LightEffectMode:
@@ -44,16 +57,22 @@ class LightEffectMode(Enum):
                 return mode
 
         _LOGGER.warning(
-            "Value %d does not match any LightEffectMode, defaulting to MUSIC", value
+            "Value %d does not match any LightEffectMode, defaulting to STATIC", value
         )
-        return cls.MUSIC
+        return cls.STATIC
 
     @classmethod
     def display_names(cls) -> dict[LightEffectMode, str]:
         """Return a mapping of LightEffectMode to display names."""
         return {
-            cls.MUSIC: "Music",
-            cls.H2D: "H2D",
+            cls.STATIC: "Static",
+            cls.BREATHING: "Breathing",
+            cls.STROBING: "Strobing",
+            cls.MARQUEE: "Marquee",
+            cls.COLOR_CYCLE: "Color Cycle",
+            cls.RAINBOW: "Rainbow",
+            cls.WARNING_HOT: "Warning Hot",
+            cls.H2D_STYLE: "H2D Style",
         }
 
     @property
@@ -69,10 +88,10 @@ class LightEffectMode(Enum):
                 return mode
 
         _LOGGER.warning(
-            "Display name %s does not match any LightEffectMode, defaulting to MUSIC",
+            "Display name %s does not match any LightEffectMode, defaulting to STATIC",
             value,
         )
-        return cls.MUSIC
+        return cls.STATIC
 
     @classmethod
     def names(cls) -> list[str]:
@@ -141,6 +160,26 @@ class LightEffectSelect(PandaStatusEntity, SelectEntity):
         self._current_mode = mode
         self.async_write_ha_state()
 
+        # This entity's own optimistic state is written above, but other
+        # entities (e.g. the Follow Printer Light switch) read
+        # settings.current_mode straight off coordinator.data, and won't
+        # see this change until the coordinator's data actually refreshes.
+        # Without kicking a refresh here, they'd be stuck showing stale
+        # state until the next scheduled 60s poll. Same delay-then-refresh
+        # pattern as PandaStatusRGBIdleLight - give the device a moment to
+        # settle before reading back, rather than racing it.
+        self.hass.async_create_task(self._async_reconcile_after_delay())
+
+    async def _async_reconcile_after_delay(self) -> None:
+        """Refresh the coordinator shortly after sending a mode change.
+
+        Each command opens a brand new WebSocket connection with no
+        guarantee the device has finished applying it before that
+        connection closes, so a short delay avoids reading back stale data.
+        """
+        await asyncio.sleep(1)
+        await self.coordinator.async_request_refresh()
+
     @callback
     def _handle_coordinator_update(self) -> None:
         self._current_mode = self._get_state_from_data()
@@ -152,4 +191,4 @@ class LightEffectSelect(PandaStatusEntity, SelectEntity):
         if mode is not None:
             return LightEffectMode.from_value(mode)
 
-        return LightEffectMode.MUSIC
+        return LightEffectMode.STATIC
