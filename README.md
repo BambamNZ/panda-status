@@ -7,7 +7,6 @@
 _Control your BIQU (BigTreeTech) Panda Aura / P2 Status via Home Assistant_
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
-[![Validate with hassfest](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Downloads](https://img.shields.io/github/downloads/BambamNZ/panda-status/total)
@@ -25,12 +24,9 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 
 ## Project Status 🟢🟡🔴
 
-<table>
-  <tr>
-    <td><a href="https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml" alt="lint"><img src="https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml/badge.svg" alt="lint build"/></a></td>
-    <td><a href="https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml" alt="MS Build"><img src="https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml/badge.svg" alt="MS Build"/></a></td>
-  </tr>
-</table>
+[![hassfest](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml)
+[![Lint](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml)
+[![Validate](https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/validate.yml)
 
 ---
 
