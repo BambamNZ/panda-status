@@ -7,6 +7,7 @@
 _Control your BIQU (BigTreeTech) Panda Aura / P2 Status via Home Assistant_
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![Validate with hassfest](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yaml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Downloads](https://img.shields.io/github/downloads/BambamNZ/panda-status/total)
