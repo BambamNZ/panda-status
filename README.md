@@ -33,6 +33,20 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 
 ## Features
 
+### Light 💡
+
+- **RGB Idle Light** - Allows control the idle light
+- **Colour controls** - Available based on Light Theme selected (Static/Breathing/Strobe/Marquee)  
+
+### Switches 🕹️
+
+- **WiFi AP** - Allows you to enable/disable the AP function.
+- **Follow Printer Light** - Conditional available based on Light Theme selected - all except H2D Style 
+
+### Select Entities ✅
+
+- **Light effect mode**: Lets you swap from mode on the fly (Static/Breathing/Strobe/..../H2D style).
+
 ### Sensors 📡
 
 - **WiFi AP SSID**: Shows the SSID of the device's WiFi access point.
@@ -44,21 +58,6 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 - **Printer S/N**: Shows the printer's Serial Number.
 - **Printer state**: Indicates printer status.
 - **Firmware version**: Shows the firmware version.
-
-### Switches 🕹️
-
-- **WiFi AP** - Allows you to enable/disable the AP.
-
-### Light 💡
-
-- **RGB Idle Light** - Allows control the idle light
-  - **Changes from original integration:**
-  - Idle light as an entity in HA, with expected light controls
-
-### Select Entities ✅
-
-- **Light effect mode**: Lets you swap from mode on the fly (Music/H2D style).
-- This will be a focus for upcoming releases 
 
 ## 📦 Installation
 
