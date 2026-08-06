@@ -1,11 +1,20 @@
+# Custom integration to integrate panda_status with Home Assistant
+#
+# For more details about this integration, please refer to
+# Copyright (c) 2024 Mitchell (github.com/ping-localhost/panda-status)
+# Copyright (c) 2026 Your Name (github.com/BambamNZ/panda-status)
+#
+# SPDX-License-Identifier: MIT
+
 """Select platform for Panda Status integration."""
 
 from __future__ import annotations
 
 import asyncio
 from enum import Enum
+import json
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from custom_components.panda_status import tools
 from custom_components.panda_status.coordinator import PandaStatusDataUpdateCoordinator
@@ -99,6 +108,20 @@ class LightEffectMode(Enum):
         return [mode.display_name for mode in cls]
 
 
+# Only these effect modes accept a custom colour from the user - the rest
+# (Color Cycle, Rainbow, Warning Hot, H2D Style) are fully device-driven
+# and have no rgb_rgba concept. Shared with light.py, which defines the
+# actual colour picker; this lives here alongside the enum it describes
+# to avoid a circular import (light.py already imports LightEffectMode
+# from this module).
+COLOR_CAPABLE_MODES = {
+    LightEffectMode.STATIC.value,
+    LightEffectMode.BREATHING.value,
+    LightEffectMode.STROBING.value,
+    LightEffectMode.MARQUEE.value,
+}
+
+
 async def async_setup_entry(
     hass: HomeAssistant,  # noqa: ARG001
     entry: PandaStatusConfigEntry,
@@ -152,10 +175,30 @@ class LightEffectSelect(PandaStatusEntity, SelectEntity):
         return self._current_mode.display_name
 
     async def async_select_option(self, option: str) -> None:
-        """Change the selected light effect mode."""
+        """Change the selected light effect mode.
+
+        The device remembers colour independently per effect mode -
+        confirmed via testing: setting Static to blue, then switching to
+        Breathing, shows Breathing's own last-remembered colour rather
+        than carrying blue over. That reads as inconsistent from a human
+        perspective, so this bundles runtime_data.last_rgb_color (the
+        colour last picked from HA, shared with the light entity) into
+        the same mode-change payload whenever the new mode is
+        colour-capable. That overrides the device's per-mode memory with
+        whatever HA last showed, making mode switches WYSIWYG. If no
+        colour has been picked from HA yet this session, last_rgb_color
+        is None and this falls back to the old behaviour - just changing
+        mode and leaving colour untouched.
+        """
         mode = LightEffectMode.from_display_name(option)
+        settings: dict[str, Any] = {"rgb_info_mode": mode.value}
+
+        last_color = self.coordinator.config_entry.runtime_data.last_rgb_color
+        if mode.value in COLOR_CAPABLE_MODES and last_color is not None:
+            settings["rgb_rgba"] = tools.rgb_to_hex(last_color)
+
         await self.coordinator.config_entry.runtime_data.client.async_send(
-            '{"settings":{"rgb_info_mode":' + str(mode.value) + "}}"
+            json.dumps({"settings": settings})
         )
         self._current_mode = mode
         self.async_write_ha_state()

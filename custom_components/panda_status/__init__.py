@@ -1,9 +1,12 @@
-"""
-Custom integration to integrate panda_status with Home Assistant.
+# Custom integration to integrate panda_status with Home Assistant
+#
+# For more details about this integration, please refer to
+# Copyright (c) 2024 Mitchell (github.com/ping-localhost/panda-status)
+# Copyright (c) 2026 Your Name (github.com/BambamNZ/panda-status)
+#
+# SPDX-License-Identifier: MIT
 
-For more details about this integration, please refer to
-https://github.com/ping-localhost/panda-status
-"""
+"""The Panda Status integration."""
 
 from __future__ import annotations
 
