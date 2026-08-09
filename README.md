@@ -26,7 +26,7 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 
 [![hassfest](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml)
 [![Lint](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml)
-[![HACS](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yml)
+[![HACS](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yaml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yaml)
 <!-- ![GitHub Downloads](https://img.shields.io/github/downloads/BambamNZ/panda-status/total) -->
 
 ---
