@@ -1,22 +1,18 @@
-<h1 align="center" style="display: block; font-size: 2.5em; font-weight: bold; margin-block-start: 1em; margin-block-end: 1em;">
-<a name="logo" href="https://github.com/BambamNZ/panda-status"><img width="500" height="500" alt="Panda_Aura_A1-6" src="https://github.com/user-attachments/assets/f5f1d966-ceb6-44a7-8495-edb5fceca019" />
-</a>
-  <br /><br /><strong>Panda Status</strong>
-</h1>
-
+# Panda Status
 _Control your BIQU (BigTreeTech) Panda Aura / P2 Status via Home Assistant_
 
 [![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/BambamNZ/panda-status?style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/BambamNZ/panda-status?style=for-the-badge)
 
+<img width="500" height="500" alt="Panda_Aura" src="https://github.com/user-attachments/assets/f5f1d966-ceb6-44a7-8495-edb5fceca019" />
 
 ---
 
 ## Overview
 
-**Panda Status**:
-Custom Home Assistant integration for monitoring and controlling your BIQU (BigTreeTech) Panda Aura and possibly others (P2) device(s). Connection via WebSocket, parses messages, and exposes device data and controls to Home Assistant.
+Custom Home Assistant integration for monitoring and controlling your BIQU (BigTreeTech) Panda Aura and possibly others (P2) device(s). 
+Connection via WebSocket, parses messages, and exposes device data and controls to Home Assistant.
 
 **Tested with**: V1.0.0 Panda Aura A1 / A1 Mini
 
@@ -26,8 +22,8 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 
 [![hassfest](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hassfest.yml)
 [![Lint](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/lint.yml)
-[![HACS](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yml)
-<!-- ![GitHub Downloads](https://img.shields.io/github/downloads/BambamNZ/panda-status/total) -->
+[![HACS](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yaml/badge.svg)](https://github.com/BambamNZ/panda-status/actions/workflows/hacs.yaml)
+<!-- [GitHub Downloads](https://img.shields.io/github/downloads/BambamNZ/panda-status/total) -->
 
 ---
 
@@ -41,7 +37,7 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 ### Switches 🕹️
 
 - **WiFi AP** - Allows you to enable/disable the AP function.
-- **Follow Printer Light** - Conditional available based on Light Theme selected - all except H2D Style 
+- **Follow Printer Light** - Conditionally available based on Light Theme selected - all except H2D Style 
 
 ### Select Entities ✅
 
@@ -56,7 +52,7 @@ Custom Home Assistant integration for monitoring and controlling your BIQU (BigT
 - **Printer name**: Displays the connected printer's name.
 - **Printer IP address**: Shows the printer's IP.
 - **Printer S/N**: Shows the printer's Serial Number.
-- **Printer state**: Indicates printer status.
+- **Printer Binding Status**: Indicates status of connection between 3D Printer and Panda Status controller.
 - **Firmware version**: Shows the firmware version.
 
 ## 📦 Installation
@@ -80,6 +76,11 @@ After installation, add the integration via Home Assistant UI:
 ## 🎫 Support & Issues
 
 For issues or feature requests, open an [issue on GitHub](https://github.com/BambamNZ/panda-status/issues).
+
+## Known Limitations / Bugs
+
+- Setting the Light Theme via the Panda Status Web UI, the colour is not replicated back into the integration
+- The ability to set unique colour for each Light Theme via the Panda Status WEB UI, Integration carries colour over from theme to theme  
 
 ## License
 
