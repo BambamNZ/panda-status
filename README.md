@@ -39,6 +39,12 @@ Connection via WebSocket, parses messages, and exposes device data and controls 
 - **WiFi AP** - Allows you to enable/disable the AP function.
 - **Follow Printer Light** - Conditionally available based on Light Theme selected - all except H2D Style 
 
+### Text Entities ✏️
+
+- **AP SSID** - Set the WiFi AP's network name. Only settable while the AP switch is on.
+- **AP IP Address** - Set the WiFi AP's own IP address. Only settable while the AP switch is on.
+- **AP Password** - Set the WiFi AP's password. Only settable while the AP switch is on. Disabled by default (opt-in via entity settings) since it's a plaintext credential.
+
 ### Select Entities ✅
 
 - **Light effect mode**: Lets you swap from mode on the fly (Static/Breathing/Strobe/..../H2D style).
@@ -46,8 +52,6 @@ Connection via WebSocket, parses messages, and exposes device data and controls 
 ### Sensors 📡
 
 - **WiFi AP SSID**: Shows the SSID of the device's WiFi access point. Conditionally available - only reports a value while the AP switch is on.
-- **WiFi AP IP Address**: Shows the IP address of the device's WiFi access point. Conditionally available - only reports a value while the AP switch is on.
-- **WiFi AP Password**: Shows the password of the device's WiFi access point. Conditionally available - only reports a value while the AP switch is on. Disabled by default (opt-in via entity settings) since it's a plaintext credential.
 - **Device IP address**: Displays the IP address of the Panda Status device.
 - **Device hostname**: Shows the hostname.
 - **WiFi connection state**: Indicates connection status.
