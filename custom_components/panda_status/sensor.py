@@ -28,6 +28,12 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
+# These keys only come through in the device's state push while the AP is
+# switched on (see PandaStatusAPSwitch in switch.py) - with the AP off the
+# device omits the whole "ap" sub-object bar "on"/"ssid" defaults, so these
+# entities should read as unavailable rather than showing a stale value.
+_AP_DEPENDENT_KEYS = frozenset({"ap.ssid", "ap.ip", "ap.password"})
+
 
 ENTITY_DESCRIPTIONS = (
     SensorEntityDescription(
@@ -35,6 +41,22 @@ ENTITY_DESCRIPTIONS = (
         name="AP SSID",
         icon="mdi:wifi",
         entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ap.ip",
+        name="AP IP Address",
+        icon="mdi:ip-network",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
+        key="ap.password",
+        name="AP Password",
+        icon="mdi:wifi-lock",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        # Plaintext WiFi password - fine to expose since it mirrors what the
+        # device's own web UI shows, but it has no business being on by
+        # default where it'll sit in the recorder/history. Opt-in only.
+        entity_registry_enabled_default=False,
     ),
     SensorEntityDescription(
         key="sta.ip",
@@ -109,6 +131,15 @@ class PandaStatusSensor(PandaStatusEntity, SensorEntity):
         """Initialize a PandaStatusSensor with coordinator and entity description."""
         super().__init__(coordinator, entity_description)
         self.entity_description = entity_description
+
+    @property
+    def available(self) -> bool:
+        """AP-dependent sensors are only available while the AP is on."""
+        if not super().available:
+            return False
+        if self.entity_description.key in _AP_DEPENDENT_KEYS:
+            return tools.extract_value(self.coordinator.data, "ap.on") == 1
+        return True
 
     @property
     def native_value(self) -> Any:

@@ -19,6 +19,20 @@ from websockets.exceptions import ConnectionClosed, InvalidStatus
 
 _LOGGER = logging.getLogger(__name__)
 
+# Command acknowledgements (e.g. {"response": {"type": "set_ap", "ok": 1}})
+# can be waiting on the socket right after a command is sent. A poll that
+# lands on one of these instead of a real state push would otherwise hand
+# the coordinator an envelope with none of the usual top-level keys,
+# flapping every entity to unavailable/unknown until the next scheduled
+# poll. Skip a bounded number of these per call and keep reading for the
+# actual state message.
+_MAX_ACK_SKIPS_PER_POLL = 3
+
+
+def _is_command_ack(data: object) -> bool:
+    """Return True if a message is a command acknowledgement, not state."""
+    return isinstance(data, dict) and set(data.keys()) == {"response"}
+
 
 class PandaStatusWebsocketError(Exception):
     """Exception to indicate a general WebSocket error."""
@@ -77,13 +91,25 @@ class PandaStatusWebSocket:
             # false-negative "unavailable" flaps.
             async with asyncio.timeout(5):
                 async with self._session as websocket:
-                    data = json.loads(await websocket.recv())
+                    for _ in range(_MAX_ACK_SKIPS_PER_POLL):
+                        data = json.loads(await websocket.recv())
+                        if not _is_command_ack(data):
+                            break
+                        _LOGGER.debug(
+                            "Skipping command acknowledgement: %s",
+                            json.dumps(data),
+                        )
+                    else:
+                        msg = "Only received command acknowledgements, no state"
+                        raise PandaStatusWebsocketTimeoutError(msg)  # noqa: TRY301
         except TimeoutError as e:
             msg = f"Timeout error getting data - {e}"
             raise PandaStatusWebsocketTimeoutError(msg) from e
         except (OSError, ConnectionClosed, TypeError, InvalidStatus) as e:
             msg = f"Communication error - {e}"
             raise PandaStatusWebsocketCommunicationError(msg) from e
+        except PandaStatusWebsocketTimeoutError:
+            raise
         except Exception as e:
             msg = f"Unexpected error parsing data payload - {e}"
             raise PandaStatusWebsocketError(msg) from e
