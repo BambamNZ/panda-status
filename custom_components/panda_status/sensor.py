@@ -33,6 +33,12 @@ if TYPE_CHECKING:
 
 _LOGGER = logging.getLogger(__name__)
 
+# ap.ssid only comes through in the device's state push while the AP is
+# switched on (see PandaStatusAPSwitch in switch.py) - with the AP off the
+# device omits it, so this sensor should read as unavailable rather than
+# showing a stale value.
+_AP_DEPENDENT_KEYS = frozenset({"ap.ssid"})
+
 
 class BindingState(Enum):
     """An enumeration representing the binding status between the Panda module.
@@ -172,6 +178,15 @@ class PandaStatusSensor(PandaStatusEntity, SensorEntity):
         """Initialize a PandaStatusSensor with coordinator and entity description."""
         super().__init__(coordinator, entity_description)
         self.entity_description = entity_description
+
+    @property
+    def available(self) -> bool:
+        """AP-dependent sensors are only available while the AP is on."""
+        if not super().available:
+            return False
+        if self.entity_description.key in _AP_DEPENDENT_KEYS:
+            return tools.extract_value(self.coordinator.data, "ap.on") == 1
+        return True
 
     @property
     def native_value(self) -> Any:
