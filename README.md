@@ -52,6 +52,7 @@ Connection via WebSocket, parses messages, and exposes device data and controls 
 ### Sensors 📡
 
 - **WiFi AP SSID**: Shows the SSID of the device's WiFi access point. Conditionally available - only reports a value while the AP switch is on.
+- **Wi-Fi SSID**: Shows the SSID of the infrastructure Wi-Fi network the device is joined to (separate from its own AP). The device's Wi-Fi password is never read or exposed by this integration.
 - **Device IP address**: Displays the IP address of the Panda Status device.
 - **Device hostname**: Shows the hostname.
 - **WiFi connection state**: Indicates connection status.

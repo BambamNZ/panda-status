@@ -104,6 +104,12 @@ ENTITY_DESCRIPTIONS = (
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     SensorEntityDescription(
+        key="wifi.ssid",
+        name="Wi-Fi SSID",
+        icon="mdi:router-wireless",
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    SensorEntityDescription(
         key="sta.ip",
         name="Device IP",
         icon="mdi:ip-network",
