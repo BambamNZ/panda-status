@@ -2,7 +2,7 @@
 #
 # For more details about this integration, please refer to
 # Copyright (c) 2024 Mitchell (github.com/ping-localhost/panda-status)
-# Copyright (c) 2026 Your Name (github.com/BambamNZ/panda-status)
+# Copyright (c) 2026 David Venter (github.com/BambamNZ/panda-status)
 #
 # SPDX-License-Identifier: MIT
 
