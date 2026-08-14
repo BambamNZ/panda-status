@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
 
@@ -32,6 +33,29 @@ _MAX_ACK_SKIPS_PER_POLL = 3
 def _is_command_ack(data: object) -> bool:
     """Return True if a message is a command acknowledgement, not state."""
     return isinstance(data, dict) and set(data.keys()) == {"response"}
+
+
+_REDACTED = "***redacted***"
+
+
+def _redact_secrets(data: object) -> object:
+    """Recursively mask any "password" field for logging purposes only.
+
+    The device's full state push includes ap.password and, as of the
+    wifi.ssid work, wifi.password (the household's own WiFi credential).
+    Debug logs get pasted into GitHub issues and shared for
+    troubleshooting - this must never be the thing that leaks either
+    password, so every debug log line dumps this redacted copy rather
+    than the real data/payload.
+    """
+    if isinstance(data, dict):
+        return {
+            key: (_REDACTED if key == "password" else _redact_secrets(value))
+            for key, value in data.items()
+        }
+    if isinstance(data, list):
+        return [_redact_secrets(item) for item in data]
+    return data
 
 
 class PandaStatusWebsocketError(Exception):
@@ -114,7 +138,7 @@ class PandaStatusWebSocket:
             msg = f"Unexpected error parsing data payload - {e}"
             raise PandaStatusWebsocketError(msg) from e
 
-        _LOGGER.debug("Latest data received: %s", json.dumps(data))
+        _LOGGER.debug("Latest data received: %s", json.dumps(_redact_secrets(data)))
 
         return data
 
@@ -131,11 +155,15 @@ class PandaStatusWebSocket:
 
         """
         try:
-            _LOGGER.debug("Sending payload: %s", payload)
+            log_payload = payload
+            with contextlib.suppress(TypeError, ValueError):
+                log_payload = json.dumps(_redact_secrets(json.loads(payload)))
+
+            _LOGGER.debug("Sending payload: %s", log_payload)
             async with asyncio.timeout(5):
                 async with self._session as websocket:
                     await websocket.send(payload)
-                    _LOGGER.debug("Payload sent: %s", payload)
+                    _LOGGER.debug("Payload sent: %s", log_payload)
         except TimeoutError as e:
             msg = f"Timeout error sending payload - {e}"
             raise PandaStatusWebsocketCommunicationError(msg) from e
