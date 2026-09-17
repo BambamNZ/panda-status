@@ -38,6 +38,12 @@ Connection via WebSocket, parses messages, and exposes device data and controls 
 
 - **WiFi AP** - Allows you to enable/disable the AP function.
 - **Follow Printer Light** - Conditionally available based on Light Theme selected - all except H2D Style 
+- **Sound Effects** - Enable/disable the device's onboard sound effects.
+- **Preview** - Enable/disable the preview feature. Only available while Sound Effects is on.
+
+### Number Entities 🎚️
+
+- **Sound Volume** - Slider (0-100%) to set the sound effects volume. Only settable while Sound Effects is on.
 
 ### Text Entities ✏️
 
