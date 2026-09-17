@@ -68,6 +68,26 @@ async def async_setup_entry(
                     device_class=SwitchDeviceClass.SWITCH,
                 ),
             ),
+            PandaStatusSoundSwitch(
+                coordinator=coordinator,
+                entity_description=SwitchEntityDescription(
+                    key="sound",
+                    name="Sound Effects",
+                    icon="mdi:volume-high",
+                    entity_category=EntityCategory.CONFIG,
+                    device_class=SwitchDeviceClass.SWITCH,
+                ),
+            ),
+            PandaStatusPreviewSwitch(
+                coordinator=coordinator,
+                entity_description=SwitchEntityDescription(
+                    key="preview",
+                    name="Preview",
+                    icon="mdi:volume-vibrate",
+                    entity_category=EntityCategory.CONFIG,
+                    device_class=SwitchDeviceClass.SWITCH,
+                ),
+            ),
         ]
     )
 
@@ -185,6 +205,132 @@ class PandaStatusFollowPrinterLightSwitch(PandaStatusEntity, SwitchEntity):
             '{"settings":{"rgb_info_mode":'
             + str(self._current_mode())
             + ',"follow":0}}'
+        )
+        self._attr_is_on = False
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()
+
+
+class PandaStatusSoundSwitch(PandaStatusEntity, SwitchEntity):
+    """Representation of the Sound Effects switch.
+
+    Controls the device's own UI/notification sound effects (confirmed via
+    WebSocket capture: {"sound":{"on":true}} / {"sound":{"on":false}}).
+    Unlike the AP switch, the device uses JSON booleans here rather than
+    1/0 integers - sent as captured rather than normalised to match the
+    other switches, per the project's rule of trusting real hardware
+    captures over assumed consistency.
+    """
+
+    def __init__(
+        self,
+        coordinator: PandaStatusDataUpdateCoordinator,
+        entity_description: SwitchEntityDescription,
+    ) -> None:
+        """
+        Initialize the Sound Effects switch entity.
+
+        Args:
+            coordinator: The data update coordinator for panda_status.
+            entity_description: Description of the switch entity.
+
+        """
+        super().__init__(coordinator, entity_description)
+        self.entity_description = entity_description
+        self._attr_is_on = self._get_state_from_data()
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self._attr_is_on = self._get_state_from_data()
+        self.async_write_ha_state()
+
+    def _get_state_from_data(self) -> bool | None:
+        """Get the current sound state from coordinator data."""
+        sound_on = tools.extract_value(self.coordinator.data, "sound.on")
+        if sound_on is not None:
+            return bool(sound_on)
+        return None
+
+    async def async_turn_on(self, **kwargs: Any) -> None:  # noqa: ARG002
+        """Turn on sound effects."""
+        await self.coordinator.config_entry.runtime_data.client.async_send(
+            '{"sound":{"on":true}}'
+        )
+        self._attr_is_on = True
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs: Any) -> None:  # noqa: ARG002
+        """Turn off sound effects."""
+        await self.coordinator.config_entry.runtime_data.client.async_send(
+            '{"sound":{"on":false}}'
+        )
+        self._attr_is_on = False
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()
+
+
+class PandaStatusPreviewSwitch(PandaStatusEntity, SwitchEntity):
+    """Representation of the Preview switch.
+
+    Controls the device's preview feature (confirmed via WebSocket capture:
+    {"preview":{"on":true}} / {"preview":{"on":false}}). Same boolean
+    payload shape as the Sound Effects switch, sent as captured.
+
+    Only togglable while Sound Effects is on - greys itself out otherwise,
+    mirroring how the Follow Printer Light switch depends on the current
+    light effect mode.
+    """
+
+    def __init__(
+        self,
+        coordinator: PandaStatusDataUpdateCoordinator,
+        entity_description: SwitchEntityDescription,
+    ) -> None:
+        """
+        Initialize the Preview switch entity.
+
+        Args:
+            coordinator: The data update coordinator for panda_status.
+            entity_description: Description of the switch entity.
+
+        """
+        super().__init__(coordinator, entity_description)
+        self.entity_description = entity_description
+        self._attr_is_on = self._get_state_from_data()
+
+    @property
+    def available(self) -> bool:
+        """Unavailable while Sound Effects is off - preview depends on it."""
+        return super().available and bool(
+            tools.extract_value(self.coordinator.data, "sound.on")
+        )
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self._attr_is_on = self._get_state_from_data()
+        self.async_write_ha_state()
+
+    def _get_state_from_data(self) -> bool | None:
+        """Get the current preview state from coordinator data."""
+        preview_on = tools.extract_value(self.coordinator.data, "preview.on")
+        if preview_on is not None:
+            return bool(preview_on)
+        return None
+
+    async def async_turn_on(self, **kwargs: Any) -> None:  # noqa: ARG002
+        """Turn on preview."""
+        await self.coordinator.config_entry.runtime_data.client.async_send(
+            '{"preview":{"on":true}}'
+        )
+        self._attr_is_on = True
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self, **kwargs: Any) -> None:  # noqa: ARG002
+        """Turn off preview."""
+        await self.coordinator.config_entry.runtime_data.client.async_send(
+            '{"preview":{"on":false}}'
         )
         self._attr_is_on = False
         self.async_write_ha_state()
